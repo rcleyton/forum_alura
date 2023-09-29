@@ -2,6 +2,7 @@ package forum.alura.api.infra;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -9,7 +10,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class TratadorDeErros {
 
   @ExceptionHandler(EntityNotFoundException.class)
-  public ResponseEntity<Object> tratarErro404(){
+  public ResponseEntity tratarErro404(){
     return ResponseEntity.notFound().build();
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity tratarErro400(){
+    return ResponseEntity.badRequest().build();
   }
 }
