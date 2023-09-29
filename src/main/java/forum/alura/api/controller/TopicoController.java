@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -21,8 +22,11 @@ public class TopicoController {
 
   @PostMapping
   @Transactional
-  public void cadastrar(@RequestBody @Valid DadosCadastroTopico dados){
-    repository.save(new Topico(dados));
+  public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroTopico dados, UriComponentsBuilder uriBuilder){
+    var topico = new Topico(dados);
+    repository.save(topico);
+    var uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
+    return ResponseEntity.created(uri).body(new DadosDetalhamentoTopico(topico));
   }
 
   @GetMapping
