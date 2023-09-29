@@ -38,9 +38,10 @@ public class TopicoController {
 
   @PutMapping
   @Transactional
-  public void atualizar(@RequestBody @Valid DadosAtualizacaoTopico dados){
+  public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoTopico dados){
     var topico = repository.getReferenceById(dados.id());
     topico.atualizarInformacoes(dados);
+    return ResponseEntity.ok(new DadosDetalhamentoTopico(topico));
   }
 
   @DeleteMapping("/{id}")
