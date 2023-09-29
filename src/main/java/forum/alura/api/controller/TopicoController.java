@@ -35,4 +35,11 @@ public class TopicoController {
     var topico = repository.getReferenceById(id);
     return ResponseEntity.ok(new DadosDetalhamentoTopico(topico));
   }
+
+  @PutMapping
+  @Transactional
+  public void atualizar(@RequestBody @Valid DadosAtualizacaoTopico dados){
+    var topico = repository.getReferenceById(dados.id());
+    topico.atualizarInformacoes(dados);
+  }
 }
